@@ -304,72 +304,72 @@
 			});
 	});
 
- $(page).find('#doneButton')
-					.on('click', function () {
 
-		var searchBarValue = makeUpperCase($("#searchBar").val());
-								
-		$.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript.php?callback=?",
-							{
-									locationname : searchBarValue
+ $(page).find('#doneButton') .on('click', function () {
 
-							}, function(result){
-								//response data are now in the result variable
-								  console.log(result);
-								    if( result.description !== "error"){
+	var searchBarValue = makeUpperCase($("#searchBar").val());
+							
+	$.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript.php?callback=?",
+		{
+				locationname : searchBarValue
 
-											if (typeof localStorage !== 'undefined'){
-		 
-											  var locationsList = new Array();     
+		}, function(result){
+			//response data are now in the result variable
+			  console.log(result);
+				if( result.description !== "error"){
+
+					if (typeof localStorage !== 'undefined'){
+
+					  var locationsList = new Array();     
 
 
-											   if(localStorage.getItem("locations-list") !== null){
-								  
-												  locationsList = JSON.parse( localStorage.getItem("locations-list") );
-											
-												}
-													
-												var test = false;
+					   if(localStorage.getItem("locations-list") !== null){
+		  
+						  locationsList = JSON.parse( localStorage.getItem("locations-list") );
+					
+						}
+							
+						var test = false;
 
-												$.each( locationsList, function( key, value ) {
+						$.each( locationsList, function( key, value ) {
 
-												   if(searchBarValue === locationsList[key].location ){
+						   if(searchBarValue === locationsList[key].location ){
 
-														test = true;
+								test = true;
 
-													}
-												});
+							}
+						});
 
-												console.log(test);
-						
-												if(test !== true){
+						console.log(test);
 
-													if( searchBarValue !== "" ){
+						if(test !== true){
 
-														locationsList.push( result );
+							if( searchBarValue !== "" ){
 
-														localStorage.setItem( "locations-list",JSON.stringify(locationsList) );
+								locationsList.push( result );
 
-														App.load('weather');
+								localStorage.setItem( "locations-list",JSON.stringify(locationsList) );
 
-														console.log(locationsList);
+								App.load('weather');
 
-													}
-												}	
+								console.log(locationsList);
 
-												$("#errorMessage").hide();
+							}
+						}	
 
-											} else{
-												//alert that we couldnt save the data 
-												}	
+						$("#errorMessage").hide();
 
-									}else { 
-									   $("#errorMessage").html("the location doesn`t exist!");	
-									   $("#errorMessage").show();	
-									}
-							});
-		});
-	});					
+					} else{
+						//alert that we couldnt save the data 
+						}	
+
+				}else { 
+				   $("#errorMessage").html("the location doesn`t exist!");	
+				   $("#errorMessage").show();	
+				}
+		
+	});
+});					
 
       App.controller('weather', function (page) {
 
