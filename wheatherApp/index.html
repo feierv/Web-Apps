@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wheater App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="app.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <style>
+      /* TODO  */
+  
+      #searchBar{
+
+		border-top-left-radius: 25px;
+		border-bottom-left-radius: 25px;
+		
+        width:90%;
+		height:95%;
+		margin-left:10px;
+		margin-top:15px;
+	}
+
+	 #searchBarContainer{
+
+				background-color:#334455;
+				padding-bottom:15px;
+				display: flex;
+				
+	}
+		
+	#geoLocationButtonContainer{
+
+	background-color:white;
+	width:6%;	
+	border-top-right-radius: 25px;
+	border-bottom-right-radius: 25px;
+			margin-top:15px;
+     margin-left:-1px;
+	
+	}
+
+	#compass{
+	color:grey;
+	padding-top:10px;
+	padding-left:1px;
+	}
+
+	.countryName{
+
+      font-size:15px;
+	}
+	
+
+	.snow{
+	
+	 background-image: url("img/snow.jpg");
+
+	}
+
+	.clearsky{
+	
+	 background-image: url("img/clearsky.jpg");
+
+	}
+
+	.brokenclouds{
+
+	 background-image: url("img/brokenclouds.jpg");
+
+	}
+
+	.fewclouds{
+
+	 background-image: url("img/fewclouds.jpg");
+
+	}
+
+	.scatteredclouds{
+
+	 background-image: url("img/scatteredclouds.jpg");
+
+	}
+
+	.overcastclouds{
+
+	 background-image: url("img/overcastclouds.jpg");
+
+	}
+
+	.showerrain{
+
+	 background-image: url("img/showerrain.jpg");
+
+	}
+
+	.moderaterain{
+		 background-image: url("img/rain.jpg");
+
+	}
+
+	.lightrain{
+
+	 background-image: url("img/rain.jpg");
+
+	}
+
+	.lightintensitydrizzle{
+
+	 background-image: url("img/rain.jpg");
+
+
+	}
+	
+	.drizzle{
+
+	 background-image: url("img/rain.jpg");
+
+
+	}
+
+	.rain{
+
+	 background-image: url("img/rain.jpg");
+
+	}
+
+	.thunderstorm{
+
+	 background-image: url("img/thunderstorm.jpg");
+
+	}
+
+	.mist{
+
+	 background-image: url("img/mist.jpg");
+
+	}
+	
+	.degree{
+
+	font-size:23px;
+	padding-right:10px;
+	padding-top:15px;
+
+	float:right;
+
+	}
+	
+	.wheaterContainer{
+	color:white;
+	}
+
+
+	.regionName{
+
+	font-size:25px;
+	
+	}
+
+	.wheaterCondition{
+
+	font-size:15px;
+
+	}
+
+   #errorMessage{
+
+		display:none;
+	}
+		
+    </style>
+  </head>
+
+	<div class="app-page" data-page="home">
+				<div class="app-topbar dark-blue">
+					<div class="app-title"><i class="fas fa-cloud-sun"></i>Wheater App</div>
+					<div class="right app-button" id="doneButton">Done</div>
+
+				</div>
+			
+		<div class="app-content">
+
+			<div id="searchBarContainer">
+				<input class="app-input" id="searchBar" type="search" placeholder="Search location...">
+
+				<div id="geoLocationButtonContainer">
+					<i class="far fa-compass" id="compass"></i>
+				</div>
+			</div> 
+
+				<p class="app-section" id="errorMessage"></p>
+
+				<p class="app-section">
+					The weather app enables you make better preparation for the day in relation to giving accurate daily weather forecast	
+				</p>
+
+				<div class="app-section" id="wheaterList">				
+
+						
+				</div>
+
+	</div>
+
+      <div class="app-page" data-page="weather">
+				<div class="app-topbar dark-blue">
+					<div class="app-title">Wheater App</div>
+					<div class="right app-button" id="backButton" >back</div>
+
+				</div>
+	  </div>
+
+  <body>
+   
+    <script src="zepto.js"></script>
+    <script src="app.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+	
+	
+    <script>
+
+
+	function makeUpperCase(stringValue){
+
+		var _val = stringValue;
+		var _txt = _val.charAt(0).toUpperCase() + _val.slice(1).toLowerCase();
+			
+			return _txt;
+	}
+
+
+
+      App.controller('home', function (page) {
+
+		   if(typeof localStorage !== "undefined") {
+
+				if(localStorage.getItem("locations-list") !== null){
+
+						var  locationsList = JSON.parse( localStorage.getItem("locations-list") ); 
+
+					$.each( locationsList, function( key, value ) {
+
+								
+
+									var weatherCondition = locationsList[key].description.replace(/\s/g, ""); 
+									var locationName 	 = locationsList[key].location;
+									var locationDescription  = locationsList[key].description;
+									var temperature 	 = locationsList[key].temperature;
+									var country          = locationsList[key].country;
+
+											$(page).find("#wheaterList").append('<div class="container-fluid wheaterContainer '
+												+ weatherCondition + '">  <div class="row">	<div class="col">	<p class="regionName">'
+												+ locationName +',<span class="countryName">'+ country +'<span> </p><p class="wheaterCondition">'
+												+ locationDescription +
+												'</p></div><div class="col"> <span class="degree">'
+												+ temperature +
+												' &#8451;</span></div> </div></div>');
+
+					});
+									
+							 
+
+				} else { 
+
+						App.dialog({
+								title        : 'Wheater app',
+								text         : 'Search any location in the search bar or get your location with the compass button,and then tap done button!',
+								okButton     : 'ok'
+								}, function (choice) {
+								console.log(choice);
+							});
+									 $(page).find('#wheaterList').hide();
+
+							} 
+
+			}
+
+
+	 $(page).find('#wheaterList').on('click', '.wheaterContainer', function() {
+	// Do something on an existent or future .dynamicElement
+		alert($( this ).contents().find( "p.regionName" ).text());
+		localStorage.setItem("location",$( this ).contents().find( "p.regionName" ).text());
+		App.load('weather');
+
+		});
+
+
+
+
+ $(page).find('#compass')
+					.on('click', function () {
+
+
+		$.ajax({
+			  url: "https://geolocation-db.com/jsonp",
+			  jsonpCallback: "callback",
+			  dataType: "jsonp",
+			  success: function(location) {
+					//alert(location.country_name+"  "+location.state+" "+location.city);
+					$("#searchBar").val(location.city);
+			  }
+			});
+	});
+
+ $(page).find('#doneButton')
+					.on('click', function () {
+
+		var searchBarValue = makeUpperCase($("#searchBar").val());
+								
+		$.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript.php?callback=?",
+							{
+									locationname : searchBarValue
+
+							}, function(result){
+								//response data are now in the result variable
+								  console.log(result);
+								    if( result.description !== "error"){
+
+											if (typeof localStorage !== 'undefined'){
+		 
+											  var locationsList = new Array();     
+
+
+											   if(localStorage.getItem("locations-list") !== null){
+								  
+												  locationsList = JSON.parse( localStorage.getItem("locations-list") );
+											
+												}
+													
+												var test = false;
+
+												$.each( locationsList, function( key, value ) {
+
+												   if(searchBarValue === locationsList[key].location ){
+
+														test = true;
+
+													}
+												});
+
+												console.log(test);
+						
+												if(test !== true){
+
+													if( searchBarValue !== "" ){
+
+														locationsList.push( result );
+
+														localStorage.setItem( "locations-list",JSON.stringify(locationsList) );
+
+														App.load('weather');
+
+														console.log(locationsList);
+
+													}
+												}	
+
+												$("#errorMessage").hide();
+
+											} else{
+												//alert that we couldnt save the data 
+												}	
+
+									}else { 
+									   $("#errorMessage").html("the location doesn`t exist!");	
+									   $("#errorMessage").show();	
+									}
+							});
+		});
+	});					
+
+      App.controller('weather', function (page) {
+
+
+			$(page).find('#backButton').on('click',function(){
+
+		        App.load('home');
+
+			});
+
+
+      });
+
+      try {
+        App.restore();
+      } catch (err) {
+        App.load('home');
+      }
+    </script>
+   
+</html>
