@@ -1,0 +1,161 @@
+      /* TODO  */
+  
+      #searchBar{
+
+		border-top-left-radius: 25px;
+		border-bottom-left-radius: 25px;
+		
+        width:90%;
+		height:95%;
+		margin-left:10px;
+		margin-top:15px;
+	}
+
+	 #searchBarContainer{
+
+				background-color:#334455;
+				padding-bottom:15px;
+				display: flex;
+				
+	}
+		
+	#geoLocationButtonContainer{
+
+	background-color:white;
+	width:6%;	
+	border-top-right-radius: 25px;
+	border-bottom-right-radius: 25px;
+			margin-top:15px;
+     margin-left:-1px;
+	
+	}
+
+	#compass{
+	color:grey;
+	padding-top:10px;
+	padding-left:1px;
+	}
+
+	.countryName{
+
+      font-size:15px;
+	}
+	
+
+	.snow{
+	
+	 background-image: url("img/snow.jpg");
+
+	}
+
+	.clearsky{
+	
+	 background-image: url("img/clearsky.jpg");
+
+	}
+
+	.brokenclouds{
+
+	 background-image: url("img/brokenclouds.jpg");
+
+	}
+
+	.fewclouds{
+
+	 background-image: url("img/fewclouds.jpg");
+
+	}
+
+	.scatteredclouds{
+
+	 background-image: url("img/scatteredclouds.jpg");
+
+	}
+
+	.overcastclouds{
+
+	 background-image: url("img/overcastclouds.jpg");
+
+	}
+
+	.showerrain{
+
+	 background-image: url("img/showerrain.jpg");
+
+	}
+
+	.moderaterain{
+		 background-image: url("img/rain.jpg");
+
+	}
+
+	.lightrain{
+
+	 background-image: url("img/rain.jpg");
+
+	}
+
+	.lightintensitydrizzle{
+
+	 background-image: url("img/rain.jpg");
+
+
+	}
+	
+	.drizzle{
+
+	 background-image: url("img/rain.jpg");
+
+
+	}
+
+	.rain{
+
+	 background-image: url("img/rain.jpg");
+
+	}
+
+	.thunderstorm{
+
+	 background-image: url("img/thunderstorm.jpg");
+
+	}
+
+	.mist{
+
+	 background-image: url("img/mist.jpg");
+
+	}
+	
+	.degree{
+
+	font-size:23px;
+	padding-right:10px;
+	padding-top:15px;
+
+	float:right;
+
+	}
+	
+	.wheaterContainer{
+	color:white;
+	}
+
+
+	.regionName{
+
+	font-size:25px;
+	
+	}
+
+	.wheaterCondition{
+
+	font-size:15px;
+
+	}
+
+   #errorMessage{
+
+		display:none;
+	}
+		

@@ -4,181 +4,21 @@
     <title>Wheater App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
     <link rel="stylesheet" href="app.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-   <style>
-      /* TODO  */
-  
-      #searchBar{
-
-		border-top-left-radius: 25px;
-		border-bottom-left-radius: 25px;
-		
-        width:90%;
-		height:95%;
-		margin-left:10px;
-		margin-top:15px;
-	}
-
-	 #searchBarContainer{
-
-				background-color:#334455;
-				padding-bottom:15px;
-				display: flex;
-				
-	}
-		
-	#geoLocationButtonContainer{
-
-	background-color:white;
-	width:6%;	
-	border-top-right-radius: 25px;
-	border-bottom-right-radius: 25px;
-			margin-top:15px;
-     margin-left:-1px;
-	
-	}
-
-	#compass{
-	color:grey;
-	padding-top:10px;
-	padding-left:1px;
-	}
-
-	.countryName{
-
-      font-size:15px;
-	}
-	
-
-	.snow{
-	
-	 background-image: url("img/snow.jpg");
-
-	}
-
-	.clearsky{
-	
-	 background-image: url("img/clearsky.jpg");
-
-	}
-
-	.brokenclouds{
-
-	 background-image: url("img/brokenclouds.jpg");
-
-	}
-
-	.fewclouds{
-
-	 background-image: url("img/fewclouds.jpg");
-
-	}
-
-	.scatteredclouds{
-
-	 background-image: url("img/scatteredclouds.jpg");
-
-	}
-
-	.overcastclouds{
-
-	 background-image: url("img/overcastclouds.jpg");
-
-	}
-
-	.showerrain{
-
-	 background-image: url("img/showerrain.jpg");
-
-	}
-
-	.moderaterain{
-		 background-image: url("img/rain.jpg");
-
-	}
-
-	.lightrain{
-
-	 background-image: url("img/rain.jpg");
-
-	}
-
-	.lightintensitydrizzle{
-
-	 background-image: url("img/rain.jpg");
-
-
-	}
-	
-	.drizzle{
-
-	 background-image: url("img/rain.jpg");
-
-
-	}
-
-	.rain{
-
-	 background-image: url("img/rain.jpg");
-
-	}
-
-	.thunderstorm{
-
-	 background-image: url("img/thunderstorm.jpg");
-
-	}
-
-	.mist{
-
-	 background-image: url("img/mist.jpg");
-
-	}
-	
-	.degree{
-
-	font-size:23px;
-	padding-right:10px;
-	padding-top:15px;
-
-	float:right;
-
-	}
-	
-	.wheaterContainer{
-	color:white;
-	}
-
-
-	.regionName{
-
-	font-size:25px;
-	
-	}
-
-	.wheaterCondition{
-
-	font-size:15px;
-
-	}
-
-   #errorMessage{
-
-		display:none;
-	}
-		
-    </style>
+ <link rel="stylesheet" type="text/css" href="style.css">
+   
   </head>
 
 	<div class="app-page" data-page="home">
 				<div class="app-topbar dark-blue">
 					<div class="app-title"><i class="fas fa-cloud-sun"></i>Wheater App</div>
-					<div class="right app-button" id="doneButton">Done</div>
+					<div class="right app-button" id="doneButton"><i class="fas fa-search"></i></div>
 
 				</div>
 			
 		<div class="app-content">
+
 
 			<div id="searchBarContainer">
 				<input class="app-input" id="searchBar" type="search" placeholder="Search location...">
@@ -189,6 +29,12 @@
 			</div> 
 
 				<p class="app-section" id="errorMessage"></p>
+
+			<div class="app-section">
+				
+				<div class="app-button blue" id="refresh"><i class="fas fa-sync-alt"></i></div>
+
+			</div>
 
 				<p class="app-section">
 					The weather app enables you make better preparation for the day in relation to giving accurate daily weather forecast	
@@ -221,6 +67,11 @@
 	
     <script>
 
+
+	function displayWeatherData(name){
+
+	
+	}
 
 	function makeUpperCase(stringValue){
 
@@ -266,7 +117,7 @@
 
 						App.dialog({
 								title        : 'Wheater app',
-								text         : 'Search any location in the search bar or get your location with the compass button,and then tap done button!',
+								text         : 'Search any location in the search bar or get your location with the compass button,and then tap done button! ',
 								okButton     : 'ok'
 								}, function (choice) {
 								console.log(choice);
@@ -305,7 +156,8 @@
 	});
 
 
- $(page).find('#doneButton') .on('click', function () {
+
+  $(page).find('#doneButton') .on('click', function () {
 
 	var searchBarValue = makeUpperCase($("#searchBar").val());
 							
@@ -348,14 +200,14 @@
 
 								locationsList.push( result );
 
-								localStorage.setItem( "locations-list",JSON.stringify(locationsList) );
-
-								App.load('weather');
+								localStorage.setItem( "locations-list",JSON.stringify(locationsList) );								
 
 								console.log(locationsList);
 
 							}
 						}	
+
+						App.load('weather');
 
 						$("#errorMessage").hide();
 
@@ -369,7 +221,48 @@
 				}
 		});
 	});
-});					
+
+
+	$(page).find('#refresh') .on('click', function () {
+
+	localStorage.removeItem('__APP_JS_STACK__/C:/Users/Asus/Desktop/Android%20Apps/wheatherApp/index.html');
+		//console.log(JSON.parse( localStorage.getItem("locations-list") ));
+
+		locationsList = JSON.parse( localStorage.getItem("locations-list") );
+
+		localStorage.removeItem("locations-list");
+	
+		$.each( locationsList, function( key, value ) {
+
+						   console.log(locationsList[key].location );
+								//^^^^^^^^^
+								// are equal
+								// ^^^^^^^^^^
+						   console.log( value.location );
+
+					$.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript.php?callback=?",
+				{
+						locationname : value.location
+
+				}, function(result){
+
+							if(result.location !== value.location ){
+
+							 locationsList.push( result );
+
+							}
+
+
+				});
+
+
+								});
+		localStorage.setItem( "locations-list",JSON.stringify(locationsList) );
+
+		App.load('home');
+	});
+
+});							
 
       App.controller('weather', function (page) {
 
