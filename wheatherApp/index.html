@@ -228,39 +228,70 @@
 	localStorage.removeItem('__APP_JS_STACK__/C:/Users/Asus/Desktop/Android%20Apps/wheatherApp/index.html');
 		//console.log(JSON.parse( localStorage.getItem("locations-list") ));
 
-		locationsList = JSON.parse( localStorage.getItem("locations-list") );
+		var listFromLocalStorage = JSON.parse( localStorage.getItem("locations-list"));
 
-		localStorage.removeItem("locations-list");
+		var locationNames = new Array();
 	
-		$.each( locationsList, function( key, value ) {
+		var refreshedLocations = new Array();
 
-						   console.log(locationsList[key].location );
+
+
+		 $.each( listFromLocalStorage, function( key, value ) {
+
+			locationNames.push(listFromLocalStorage[key].location);
+
+		 });
+
+         
+
+		console.log("locations"+locationNames);
+
+		//$.each( locationNames, function( key, value ) {
+						localStorage.removeItem("locations-list");
+
+						//   console.log(locationsList[key].location );
 								//^^^^^^^^^
 								// are equal
 								// ^^^^^^^^^^
-						   console.log( value.location );
+						//   console.log( value.location );
 
-					$.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript.php?callback=?",
+
+				 $.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript-array.php?callback=?",
 				{
-						locationname : value.location
+						locationname : locationNames
 
 				}, function(result){
 
-							if(result.location !== value.location ){
+				    console.log( result.location+" = "+result.temperature );
 
-							 locationsList.push( result );
+			$.each( locationNames, function( key, value ) {
+			 console.log("value=="+ value );
 
-							}
+					if(result[key].location === value ){
 
+						refreshedLocations.push( result[key] );
 
+						console.log("pushed result="+result.location);
+
+					}
 				});
+			localStorage.setItem( "locations-list",JSON.stringify(refreshedLocations) );
+
+				}).done(function(){
+
+					App.load('home');
 
 
-								});
-		localStorage.setItem( "locations-list",JSON.stringify(locationsList) );
+					});
 
-		App.load('home');
+
+		//});
+
+		
+
 	});
+
+
 
 });							
 
