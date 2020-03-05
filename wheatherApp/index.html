@@ -4,6 +4,8 @@
     <title>Wheater App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
     <link rel="stylesheet" href="app.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
  <link rel="stylesheet" type="text/css" href="style.css">
@@ -24,7 +26,7 @@
 				<input class="app-input" id="searchBar" type="search" placeholder="Search location...">
 
 				<div id="geoLocationButtonContainer">
-					<i class="far fa-compass" id="compass"></i>
+                      <i class="fas fa-map-marker-alt" id="compass"></i>	
 				</div>
 			</div> 
 
@@ -46,14 +48,48 @@
 				</div>
 
 	</div>
-
+</div>
       <div class="app-page" data-page="weather">
-				<div class="app-topbar dark-blue">
-					<div class="app-title">Wheater App</div>
-					<div class="right app-button" id="backButton" >back</div>
+
+			<div class="app-topbar dark-blue">
+				<div class="app-title"> </div>
+				<div class="right app-button" id="backButton" >back</div>
+			</div>
+
+	<div class="app-content">
+
+
+		  <div class="app-section">
+			<div class="container-fluid " id="weatherDetails">
+				  <div class="row">
+					<div class="col-12 ">
+
+						<div  class="text-center">
+							<p id="temperature">  </p>
+							<p id="weatherDescription">  </p>
+						</div>
+							<p>today</p>
+
+						<hr>
+					</div>
+				    <div id="scrolly">
+					
+						 <div class="row flex-row flex-nowrap">
+							
+							</div>   
+ 
+					</div>
+
 
 				</div>
-	  </div>
+			<div class="container-fluid" id="dailyContainer">										
+									
+					
+			</div>
+			</div>
+		</div>
+
+		</div>
 
   <body>
    
@@ -68,10 +104,109 @@
     <script>
 
 
-	function displayWeatherData(name){
+	function setOvercast(name){
+
+		 // localStorage.removeItem( "clicked-location-name" );
+		//  localStorage.removeItem( "today-weather");
+		 // localStorage.removeItem("clicked-location-temperature");
+
+        let API_KEY = '1f3671a89766d74f510a6fc3efcbd812';
+
+			$.ajax({
+			  url: "http://api.openweathermap.org/data/2.5/forecast",
+			  data: {
+		     q:name,
+			  APPID: API_KEY
+             },
+			  success: function(data) {
+
+				localStorage.removeItem("hourly-weather");
+
+				var hourlyWeatherArray = new Array();
+			
+				var dailyWeatherArray = new Array();
+
+						for(var val = 0 ; val <= 8 ; val++ ){
+
+										var event = new Date(data.list[val].dt_txt);
+
+										var time = event.toLocaleTimeString('en',{hour: '2-digit', minute:'2-digit'});
+
+								    	var ico = data.list[val].weather[0].icon ;
+	
+										var temp = parseInt(data.list[val].main.temp - 272.15, 10);
+
+										var humidity = data.list[val].main.humidity;
+
+
+										var hourlyWeather = {
+																hour:time, 
+																icon:ico,
+																temperature:temp,
+																humidity:humidity
+															};
 
 	
+										//console.log(event.toLocaleTimeString('en',{hour: '2-digit', minute:'2-digit'}));
+										console.log("obj=="+hourlyWeather.icon);
+										hourlyWeatherArray.push (  hourlyWeather );
+					
+							}
+
+							localStorage.setItem( "hourly-weather",JSON.stringify(hourlyWeatherArray) );				
+
+						for(var val = 8 ; val <= 32 ; val += 8 ){
+							
+										//var event = new Date();
+
+									//	var date = event.toLocaleTimeString('en',{month: 'long', day: 'numeric'});
+
+										var dateObj = new Date(data.list[val].dt_txt);  
+
+										var options = {  month: "long",day: "numeric" };  
+
+										var date =	dateObj.toLocaleDateString("en-US", options);
+
+										var ico = data.list[val].weather[0].icon ;
+
+										var min = Math.round(data.list[val].main.temp_min - 273.15);	
+
+										var max = Math.round(data.list[val].main.temp_max - 272.15);	
+
+		
+
+
+										console.log("obj2=="+date+"  ");
+
+
+											var dailyWeather = {
+																date:date,
+																icon:ico,	
+																minimalTemperature:min,
+																maximTemperature:max
+															};
+									dailyWeatherArray.push(dailyWeather);
+						}
+							
+							localStorage.setItem( "daily-weather",JSON.stringify(dailyWeatherArray) );				
+
+
+						
+
+					//  localStorage.setItem( "clicked-location-name",data.city.name );
+					//  localStorage.setItem( "today-weather",data.list[0].weather[0].description );
+					//	localStorage.setItem("clicked-location-temperature",Math.trunc(data.list[0].main.temp - 272.15));	
+			  }
+			}).done(function(){
+
+					App.load('weather');
+
+
+					});
+
 	}
+
+
 
 	function makeUpperCase(stringValue){
 
@@ -95,19 +230,18 @@
 
 								
 
-									var weatherCondition = locationsList[key].description.replace(/\s/g, ""); 
+									var weatherCondition = locationsList[key].name; 
 									var locationName 	 = locationsList[key].location;
 									var locationDescription  = locationsList[key].description;
 									var temperature 	 = locationsList[key].temperature;
 									var country          = locationsList[key].country;
 
-											$(page).find("#wheaterList").append('<div class="container-fluid wheaterContainer '
-												+ weatherCondition + '">  <div class="row">	<div class="col">	<p class="regionName">'
+											$(page).find("#wheaterList").append('<div  class="container-fluid wheaterContainer '
+												+ weatherCondition + '">  <div class="row">	<div class="col"> <input type="hidden" value="'+weatherCondition+
+													'" name="condition" /> <p class="regionName">'
 												+ locationName +',<span class="countryName">'+ country +'<span> </p><p class="wheaterCondition">'
-												+ locationDescription +
-												'</p></div><div class="col"> <span class="degree">'
-												+ temperature +
-												' &#8451;</span></div> </div></div>');
+												+ locationDescription + '</p></div><div class="col"> <span class="degree">'
+												+ temperature +	' &#8451;</span></div> </div></div>');
 
 					});
 									
@@ -131,9 +265,22 @@
 
 	 $(page).find('#wheaterList').on('click', '.wheaterContainer', function() {
 	// Do something on an existent or future .dynamicElement
-		alert($( this ).contents().find( "p.regionName" ).text());
-		localStorage.setItem("location",$( this ).contents().find( "p.regionName" ).text());
-		App.load('weather');
+
+			 var clickedLocation        = $( this ).contents().find( "p.regionName" ).text();
+			
+			 var clickedLocationTemp    = $( this ).contents().find( "span.degree" ).text().match(/\d+/)[0]; // "
+
+			 var clickedLocationWeather = $( this ).contents().find( "p.wheaterCondition" ).text();
+
+			 var clickedLocationMain    = $( this ).contents().find( "input[name='condition']" ).val(); 
+
+		//	  localStorage.setItem("location",clickedLocation);			
+			  localStorage.setItem( "clicked-location-name",clickedLocation );
+			  localStorage.setItem( "today-weather",clickedLocationWeather);
+			  localStorage.setItem( "clicked-location-temperature",clickedLocationTemp);
+			  localStorage.setItem( "clicked-location-main",clickedLocationMain);
+
+		   	  setOvercast(clickedLocation);
 
 		});
 
@@ -174,7 +321,6 @@
 
 					  var locationsList = new Array();     
 
-
 					   if(localStorage.getItem("locations-list") !== null){
 		  
 						  locationsList = JSON.parse( localStorage.getItem("locations-list") );
@@ -185,7 +331,7 @@
 
 						$.each( locationsList, function( key, value ) {
 
-						   if(searchBarValue === locationsList[key].location ){
+						   if(result.location === locationsList[key].location ){
 
 								test = true;
 
@@ -194,6 +340,14 @@
 
 						console.log(test);
 
+								localStorage.removeItem("location");
+	
+								//  localStorage.setItem("location",result.location);
+								  localStorage.setItem( "clicked-location-name",result.location );
+								  localStorage.setItem( "today-weather",result.description);
+								  localStorage.setItem( "clicked-location-temperature",result.temperature);
+								  localStorage.setItem( "clicked-location-main",result.name);
+								  setOvercast(result.location);
 						if(test !== true){
 
 							if( searchBarValue !== "" ){
@@ -207,9 +361,11 @@
 							}
 						}	
 
-						App.load('weather');
 
 						$("#errorMessage").hide();
+
+						
+
 
 					} else{
 						//alert that we couldnt save the data 
@@ -228,84 +384,121 @@
 	localStorage.removeItem('__APP_JS_STACK__/C:/Users/Asus/Desktop/Android%20Apps/wheatherApp/index.html');
 		//console.log(JSON.parse( localStorage.getItem("locations-list") ));
 
-		var listFromLocalStorage = JSON.parse( localStorage.getItem("locations-list"));
+			var listFromLocalStorage = JSON.parse( localStorage.getItem("locations-list"));
 
-		var locationNames = new Array();
-	
-		var refreshedLocations = new Array();
+	if(listFromLocalStorage != null){
 
-
-
-		 $.each( listFromLocalStorage, function( key, value ) {
-
-			locationNames.push(listFromLocalStorage[key].location);
-
-		 });
-
-         
-
-		console.log("locations"+locationNames);
-
-		//$.each( locationNames, function( key, value ) {
-						localStorage.removeItem("locations-list");
-
-						//   console.log(locationsList[key].location );
-								//^^^^^^^^^
-								// are equal
-								// ^^^^^^^^^^
-						//   console.log( value.location );
+			var locationNames = new Array();
+		
+			var refreshedLocations = new Array();
 
 
-				 $.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript-array.php?callback=?",
-				{
-						locationname : locationNames
 
-				}, function(result){
+			 $.each( listFromLocalStorage, function( key, value ) {
 
-				    console.log( result.location+" = "+result.temperature );
+				locationNames.push(listFromLocalStorage[key].location +","+locationsList[key].country);
 
-			$.each( locationNames, function( key, value ) {
-			 console.log("value=="+ value );
+			 });
+		 
 
-					if(result[key].location === value ){
+			console.log("locations"+locationNames);
 
-						refreshedLocations.push( result[key] );
+			//$.each( locationNames, function( key, value ) {
 
-						console.log("pushed result="+result.location);
-
-					}
-				});
-			localStorage.setItem( "locations-list",JSON.stringify(refreshedLocations) );
-
-				}).done(function(){
-
-					App.load('home');
+							//   console.log(locationsList[key].location );
+									//^^^^^^^^^
+									// are equal
+									// ^^^^^^^^^^
+							//   console.log( value.location );
 
 
+					 $.getJSON("http://vladfeier-com.stackstaging.com/8-API/weatherscript-array.php?callback=?",
+					{
+							locationname : locationNames
+
+					}, function(result){
+
+					   // console.log( result[key].location+" = "+result[key].temperature );
+
+				$.each( locationNames, function( key, value ) {
+
+							console.log("pushed result="+result[key].location);
+
+							refreshedLocations.push( result[key] );
+						
 					});
+				localStorage.setItem( "locations-list",JSON.stringify(refreshedLocations) );
+
+					}).done(function(){
+
+						App.load('home');
+
+
+						});
 
 
 		//});
 
-		
+		}
 
 	});
-
 
 
 });							
 
       App.controller('weather', function (page) {
 
-
-			$(page).find('#backButton').on('click',function(){
+		$(page).find('#backButton').on('click',function(){
 
 		        App.load('home');
 
 			});
 
+		var clickedLocation = localStorage.getItem("clicked-location-name");
+		 
+		var clickedLocationWeather = localStorage.getItem("today-weather");
 
+		var clickedLocationtemperature = localStorage.getItem("clicked-location-temperature");
+
+		var clickedLocationMain = localStorage.getItem("clicked-location-main");
+
+		console.log('clicked= '+clickedLocation);
+
+		$(page).find(".app-title").append('<i class="fas fa-map-marker-alt" id="positionMarker"></i>'+clickedLocation);
+		
+		$(page).find("#temperature").append(clickedLocationtemperature +"<span>&#8451;</span>");
+
+		$(page).find("#weatherDescription").append(clickedLocationWeather);
+
+		$(page).find("#weatherDetails").addClass(clickedLocationMain);
+
+		 var hourlyWeather = JSON.parse( localStorage.getItem("hourly-weather") );
+
+      
+	$.each( hourlyWeather, function( key, value ) {
+
+			$(page).find(".flex-nowrap").append("<div class=' container col-sm'> <div class='text-center'>	<p> "+value.hour+" </p> <img src='http://openweathermap.org/img/wn/"+value.icon+"@2x.png'  alt='Responsive image'><p class='temperature'> "+value.temperature+"&#8451 </p><p class='humidity'> "+value.humidity+"<i class='fas fa-tint'></i> </p></div></div>");
+
+												
+					});	
+					//var event = new Date('2020-03-02 21:02:00');
+
+					//console.log(event.toLocaleTimeString('en',{hour: '2-digit', minute:'2-digit',month:'long'}));	
+
+		 var dailyWeather = JSON.parse( localStorage.getItem("daily-weather") );
+
+				$.each( dailyWeather, function( key, value ) {
+
+			$(page).find("#dailyContainer").append(" <div class='row'><div class='col-5'><span>"+value.date+"</span>	</div><div class='col-3'><img src='http://openweathermap.org/img/wn/"+value.icon+"@2x.png'  alt='Responsive image'  ></div><div class='col-4'> "+ value.minimalTemperature+"/"+value.maximTemperature +" &#8451	</div>  </div>	");
+
+												
+					});	
       });
+
+
+
+
+			
 
       try {
         App.restore();

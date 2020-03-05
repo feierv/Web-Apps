@@ -1,5 +1,9 @@
       /* TODO  */
   
+		html,body {
+font-family: 'Arvo', serif;
+}
+
       #searchBar{
 
 		border-top-left-radius: 25px;
@@ -36,102 +40,78 @@
 	padding-left:1px;
 	}
 
+	#positionMarker{
+
+		margin-right:5px;
+
+	}
+
 	.countryName{
 
       font-size:15px;
 	}
 	
 
-	.snow{
+	.Snow{
 	
-	 background-image: url("img/snow.jpg");
+	    background-image: url("img/snow.jpg");
+		overflow: hidden;
+		background-size: cover;
+		background-position: center;
 
 	}
 
-	.clearsky{
+	.Clear{
 	
-	 background-image: url("img/clearsky.jpg");
+	    background-image: url("img/clearsky.jpg");
+	    overflow: hidden;
+		background-size: cover;
+		background-position: center;
 
 	}
 
-	.brokenclouds{
+	.Fog{
 
-	 background-image: url("img/brokenclouds.jpg");
-
-	}
-
-	.fewclouds{
-
-	 background-image: url("img/fewclouds.jpg");
+		background-image: url("img/fog.jpg");
+	    overflow: hidden;
+		background-size: cover;
+		background-position: center;
 
 	}
 
-	.scatteredclouds{
+	.Clouds{
 
-	 background-image: url("img/scatteredclouds.jpg");
-
+		background-image: url("img/overcastclouds.jpg");
+	    overflow: hidden;
+		background-size: cover;
+		background-position: center;
 	}
 
-	.overcastclouds{
 
-	 background-image: url("img/overcastclouds.jpg");
+	.Rain{
 
+		background-image: url("img/showerrain.jpg");
+		overflow: hidden;
+		background-size: cover;
+		background-position: center;
 	}
 
-	.showerrain{
-
-	 background-image: url("img/showerrain.jpg");
-
-	}
-
-	.moderaterain{
-		 background-image: url("img/rain.jpg");
-
-	}
-
-	.lightrain{
-
-	 background-image: url("img/rain.jpg");
-
-	}
-
-	.lightintensitydrizzle{
-
-	 background-image: url("img/rain.jpg");
-
-
-	}
-
-	.heavyintensityrain{
-
-	 background-image: url("img/showerrain.jpg");
-
-
-	}
 	
-	.drizzle{
 
-	 background-image: url("img/rain.jpg");
+	.Thunderstorm{
 
-
+	    background-image: url("img/thunderstorm.jpg");
+		overflow: hidden;
+		background-size: cover;
+		background-position: center;
 	}
 
-	.rain{
+	.Mist{
 
-	 background-image: url("img/rain.jpg");
-
-	}
-
-	.thunderstorm{
-
-	 background-image: url("img/thunderstorm.jpg");
-
-	}
-
-	.mist{
-
-	 background-image: url("img/mist.jpg");
-
+	    background-image: url("img/mist.jpg");
+		overflow: hidden;
+		background-size: cover;
+		background-position: center;
 	}
 	
 	.degree{
@@ -148,6 +128,12 @@
 	color:white;
 	}
 
+    .container-fluid{
+
+		height:100%;
+		color:white;
+
+	}
 
 	.regionName{
 
@@ -161,8 +147,38 @@
 
 	}
 
+
+	#temperature{
+
+		font-size:40px;
+	
+
+	}
+
+	.text-center{
+
+		margin-top:25px;
+
+	}
+ 
+
    #errorMessage{
 
 		display:none;
 	}
 		
+
+	
+	
+	img{
+		height:50px;
+		}
+
+    #scrolly{
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            overflow-y: hidden;
+            margin: 0 auto;
+            white-space: nowrap
+        }
